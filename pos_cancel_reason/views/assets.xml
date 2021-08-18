@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <template id="assets" name="POS views" inherit_id="point_of_sale.assets">
+    <xpath expr="//script[last()]" position="after">
+    <script type="text/javascript" src="/pos_cancel_reason/static/src/js/Screens/TicketScreen/TicketScreen.js"></script>
+    <script type="text/javascript" src="/pos_cancel_reason/static/src/js/Popups/CancelReasonPopup.js"></script>
+    <script type="text/javascript" src="/pos_cancel_reason/static/src/js/models.js"></script>
+      
+      
+    </xpath>
+  </template>
+  
+
+</odoo>
