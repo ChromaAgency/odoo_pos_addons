@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <template id="assets" name="POS frontend assets" inherit_id="point_of_sale.assets">
+    <xpath expr="//script[last()]" position="after">
+      <script type="text/javascript" src="/pos_pricelist_multicurrency/static/src/js/ProductScreen/ControlButtons/SetPricelistButton.js"/>
+      <script type="text/javascript" src="/pos_pricelist_multicurrency/static/src/js/models.js"/>
+      
+    </xpath>
+  </template>
+
+</odoo>
