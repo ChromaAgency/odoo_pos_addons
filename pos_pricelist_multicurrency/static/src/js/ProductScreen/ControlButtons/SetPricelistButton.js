@@ -12,7 +12,6 @@ odoo.define('pos_pricelist_multicurrency.SetPricelistButton', function(require) 
             // Create the list to be passed to the SelectionPopup.
             // Pricelist object is passed as item in the list because it
             // is the object that will be returned when the popup is confirmed.
-            console.log(this.env.pos.currencies)
             const selectionList = this.env.pos.pricelists.filter(pricelist => this.env.pos.currency.id === pricelist.currency_id[0]).map(pricelist => ({
                 id: pricelist.id,
                 label: pricelist.name,
