@@ -24,6 +24,7 @@
     ],
     # always loaded
     'data': [
+        'views/assets.xml'
     ],
     'qweb':[
     ],
