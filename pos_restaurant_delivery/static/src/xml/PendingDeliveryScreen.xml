@@ -30,8 +30,8 @@
                                             </tr>
                                         </thead>
                                         <tbody class='show-order-list-lines'>
-                                            <t t-foreach="pendingOrders" t-as="order" t-key="order.id">
-                                                <DeliveryOrderListTile order="order.attributes" />
+                                            <t t-foreach="pendingOrders" t-as="order" t-key="order.d_name">
+                                                <DeliveryOrderListTile order="order" />
                                             </t>
                                         </tbody>
                                     </table>

@@ -1,4 +1,4 @@
-odoo.define('pos_restaurant_delivery.PendingDeliveryScreen', function(require) {
+odoo.define('pos_restaurant_delivery.DeliveryOrderListTile', function(require) {
     'use strict';
 
     const PosComponent = require('point_of_sale.PosComponent');
@@ -54,7 +54,7 @@ odoo.define('pos_restaurant_delivery.PendingDeliveryScreen', function(require) {
                 args: [[this.order.id]],
             });
             alert('Order is out for delivery.');
-            this.cancel();
+            
         }
         async setDelivered(order_rec) {
             let res = await rpc.query({
@@ -63,7 +63,7 @@ odoo.define('pos_restaurant_delivery.PendingDeliveryScreen', function(require) {
                 args: [[this.order.id]],
             });
             alert('Order has been delivered and order has been updated to "Delivered" state.');
-            this.cancel();
+            
         }
         async setPayed(order_rec) {
             let res = await rpc.query({
@@ -72,7 +72,7 @@ odoo.define('pos_restaurant_delivery.PendingDeliveryScreen', function(require) {
                 args: [[this.order.id]],
             });
             alert('Payment completed and order has been updated to "Paid" state.');
-            this.cancel();
+            
         }
         
         async setCancel(order_rec) {
@@ -82,7 +82,7 @@ odoo.define('pos_restaurant_delivery.PendingDeliveryScreen', function(require) {
                 args: [[this.order.id]],
             });
             alert('Order has been updated to "Cancelled" state.');
-            this.cancel();
+            
         }
 
   

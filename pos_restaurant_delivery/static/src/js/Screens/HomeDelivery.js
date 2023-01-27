@@ -27,30 +27,28 @@ odoo.define('pos_restaurant_delivery.HomeDelivery', function(require) {
                 args: [[]],
             });
 
-			var partner_id = false
-			if (order.get_client() != null)
-				partner_id = order.get_client();
+			var customer = order.get_client()
 
-			if (!partner_id) {
+			if (!customer || customer == null) {
 				self.showPopup('ErrorPopup', {
 					'title': _t('Unknown customer'),
 					'body': _t('You cannot use Home Delivery. Select customer first.'),
 				});
 				return;
 			}       
-
+			
 			var props =  {
 				'title': _t('Home Delivery Order'),
 				'name' : "",
-				'email' : order.get_div_email(),
-				'mobile' : order.get_div_mobile(),
-				'address' : order.get_div_location(),
-				'street' : order.get_div_street(),
-				'city' : order.get_div_city(),
-				'zip' : order.get_div_zip(),
-				'delivery_date' : order.get_delivery_date(),
-				'person_id' : order.get_div_person(),
-				'order_note' : order.get_div_note(),
+				'email' : customer.email,
+				'mobile' : customer.mobile,
+				'address' : customer.address,
+				'street' : customer.street,
+				'city' : customer.city,
+				'zip' : customer.zip,
+				'delivery_date' : order.delivery_date,
+				'person_id' : order.delivery_person_id,
+				'order_note' : order.order_note,
 				order
 			}
 			self.showPopup('DeliveryOrderWidget',props);
