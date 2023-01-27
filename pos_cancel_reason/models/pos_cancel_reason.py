@@ -15,11 +15,12 @@ class PosOrder(Model):
             'cancel_reason': ui_order.get('cancel_reason', ''),
         })
         return fields
-    
+
     @model
     def _process_order(self, order, draft, existing_order):
-        order_process = super()._process_order(order, draft, existing_order)
-        if self.browse([order_process]).cancel_reason:
-            self.action_pos_order_cancel()
-        return order_process
+        pos_order_id = super()._process_order(order, draft, existing_order)
+        pos_order = self.browse([pos_order_id])
+        if pos_order.cancel_reason:
+            pos_order.action_pos_order_cancel()
+        return pos_order_id
         

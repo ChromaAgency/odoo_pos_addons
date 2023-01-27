@@ -1,0 +1,86 @@
+odoo.define('pos_restaurant_delivery.PendingDeliveryScreen', function(require) {
+    'use strict';
+
+    const PosComponent = require('point_of_sale.PosComponent');
+    let core = require('web.core');
+	let _t = core._t;
+    const Registries = require('point_of_sale.Registries');
+    var rpc = require('web.rpc');
+
+    class DeliveryListTile extends PosComponent {
+        constructor() {
+            super(...arguments);
+        }
+        mounted() {
+        }
+        willUnmount() {
+        }
+        get employee() {
+            return this.props.employee;
+        }
+        get name(){
+            return this.employee.name
+        }
+        get total_orders(){
+            return this.employee.total_orders
+        }
+        get amount_total(){
+            return this.employee.amount_total.toFixed(2)
+        }
+        get amount_return(){
+            return this.employee.amount_return.toFixed(2)
+        }
+        get amount_return_total() {
+            return (this.employee.amount_return + this.employee.amount_total).toFixed(2)
+        }
+
+        async _onClickEmployee() {
+		    var self = this;
+            var orders = await this._getDeliveryOrders(this.employee.id);
+            await self.showTempScreen('DeliveriesOrderList', {
+                'title': _t('Delivery Orders'),
+                'allOrders': orders,
+            });
+        }
+        setInProgress(){
+            rpc.query({
+                model: 'pos.order',
+                method: 'mark_all_deliveries_in_progress_for',
+                args: [this.employee.id],
+            });
+        }
+        setDelivered(){
+            rpc.query({
+                model: 'pos.order',
+                method: 'mark_all_deliveries_delivered_for',
+                args: [this.employee.id],
+            });
+        }
+        setPayed(){
+            rpc.query({
+                model: 'pos.order',
+                method: 'mark_all_deliveries_payed_for',
+                args: [this.employee.id],
+            });
+        }
+        
+        
+        async _getDeliveryOrders(employeeId) {
+            var orders = await rpc.query({
+                model: 'pos.order',
+                method: 'get_employee_delivery_orders',
+                kwargs: {'employee_id': employeeId},
+            });
+            return orders;
+        }
+      
+
+  
+
+    }
+    DeliveryListTile.template = 'DeliveryListTile';
+
+
+    Registries.Component.add(DeliveryListTile);
+    return DeliveryListTile;
+});

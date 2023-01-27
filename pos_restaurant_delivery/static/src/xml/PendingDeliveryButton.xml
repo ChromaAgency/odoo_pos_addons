@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="pending_delivery_button" inherit_id="point_of_sale.template" xml:space="preserve">
+
+<t t-name="PendingDeliveryButton" owl="1">
+    <div class="ticket-button"  t-att-class="{ highlight: props.isTicketScreenShown }">
+        <div class="with-badge" t-att-badge="count">
+            <i class="fa fa-truck" aria-hidden="true"></i>
+        </div>
+        <div>Delivery Pendiente</div>
+    </div>
+</t>
+</templates>

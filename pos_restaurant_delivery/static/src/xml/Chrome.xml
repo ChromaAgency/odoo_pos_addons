@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <t t-name="Chrome" t-inherit="point_of_sale.Chrome" t-inherit-mode="extension" owl="1">
+
+        <div class="pos-branding" position="inside">
+            <PendingDeliveryButton isPendingOrderScreenShown="isPendingOrderScreenShown"  />
+        </div>
+        <div class="pos-rightheader" position="inside">
+            <PendingDeliveryButton isPendingOrderScreenShown="isPendingOrderScreenShown" t-if="env.isMobile" />
+        </div>
+    </t>
+
+</odoo>

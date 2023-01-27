@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="home_delivery_templates" inherit_id="point_of_sale.template" xml:space="preserve">
+
+	<t t-name="HomeDelivery" owl="1">
+		<div class="control-button">
+			<i class="fa fa-tag" />
+			<span></span>
+			<span>Programar Envío </span>
+		</div>
+	</t>
+</templates>

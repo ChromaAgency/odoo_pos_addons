@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="delivery_list_tile" inherit_id="point_of_sale.template" xml:space="preserve">
+	<t t-name="DeliveryListTile" owl="1">
+                                                    
+			<tr class='order-line'>
+				<td><t t-esc='name' /></td>
+				<td>
+					<t t-esc='total_orders'/>
+				</td>
+				<td>
+					<t t-if="total_orders > 0">
+						<button style="box-shadow: 0px 1px 3px rgb(0 0 0 / 40%);" t-on-click="_onClickEmployee()">
+							Ver ordenes
+						</button>
+					</t>
+				</td>
+				<td><t t-esc='amount_total' /></td>
+				<td><t t-esc='amount_return' /></td>
+				<td><t t-esc='amount_return_total' /></td>
+				<td style="display: flex; flex-direction: column; width: max-content;">
+	
+						<button style="box-shadow: 0px 1px 3px rgb(0 0 0 / 40%); background: #7cfc00;"
+								t-on-click="setInProgress()">En camino</button>
+						<button style="box-shadow: 0px 1px 3px rgb(0 0 0 / 40%); background: #ffff007d;"
+								t-on-click="setDelivered()">Entregado</button>
+						<button style="box-shadow: 0px 1px 3px rgb(0 0 0 / 40%); background: #00c0ff;"
+								t-on-click="setPayed()">Finalizado</button>
+				</td>
+			</tr>
+	</t>
+</templates>

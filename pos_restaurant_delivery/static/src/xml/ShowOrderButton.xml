@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="show_order_button_templates" inherit_id="point_of_sale.template" xml:space="preserve">
+
+    <t t-name="ShowOrderButton" owl="1">
+		<div class="control-button">
+			<i class="fa fa-shopping-cart" />
+            <span> </span>
+            <span>Ordenes de delivery</span>
+		</div>
+	</t>
+</templates>

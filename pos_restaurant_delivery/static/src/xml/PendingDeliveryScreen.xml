@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="pending_delivery_screen" inherit_id="point_of_sale.template" xml:space="preserve">
+
+
+    <t t-name="PendingDeliveryScreen" owl="1">
+        <div class="clientlist-screen screen container">
+            <div class="screen-content">
+                <section class="top-content">
+                    <div class='button back' t-on-click="trigger('close-screen')">
+                        <i class='fa fa-angle-double-left'></i>
+                        Volver
+                    </div>
+                </section>
+                <section class="full-content">
+                    <div class='window'>
+                        <section class='subwindow'>
+                            <div class='subwindow-container'>
+                                <div class='subwindow-container-fix touch-scrollable scrollable-y' style="overflow-x: auto !important;">
+                                    <table class='client-list'>
+                                        <thead>
+                                            <tr>
+                                                <th>Fecha</th>
+                                                <th>Order No.</th>
+                                                <th>Dirección</th>
+                                                <th>Télefono</th>
+                                                <th>Monto Total</th>
+                                                <th>Cambio</th>
+                                                <th>Cambio + Total</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class='show-order-list-lines'>
+                                            <t t-foreach="pendingOrders" t-as="order" t-key="order.id">
+                                                <DeliveryOrderListTile order="order.attributes" />
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </t>
+</templates>

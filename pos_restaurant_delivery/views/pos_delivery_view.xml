@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	
+	<record id="pos_delivery_order_config_form_view" model="ir.ui.view" >
+		<field name="name">delivery.order.pos.config.form</field>
+		<field name="model">pos.config</field> 
+		<field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//div[@id='category_reference']" position="after">
+
+				<div class="col-xs-12 col-md-6 o_setting_box">
+
+					<div class="o_setting_left_pane">
+						<field name="pos_verify_delivery"/>
+					</div>
+					<div class="o_setting_right_pane">
+						<label for="pos_verify_delivery" string="POS Home Delivery"/>
+						<div class="text-muted">
+							POS Home Delivery
+						</div>
+					</div>
+				</div>
+
+			</xpath>
+		</field>
+	</record>
+
+	<record id="view_account_journal_form_inherit_home_delivery" model="ir.ui.view">
+		<field name="name">account.journal.form.inherit.home_delivery</field>
+		<field name="model">account.journal</field>
+		<field name="inherit_id" ref="account.view_account_journal_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='type']" position="after">
+				<field name="is_home_delivery"/>
+			</xpath>
+		</field>
+	</record>
+<record id="view_pos_pos_form_inherit_pos_restaurant_delivery" model="ir.ui.view">
+	<field name="name">pos.order.view.form.inherit</field>
+	<field name="model">pos.order</field>
+	<field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+	<field name="arch" type="xml">
+		<field name="user_id" position="after">
+			<field name="delivery_date" />
+			<field name="delivery_person_id" />
+			<field name="partner_shipping_id" />
+			<field name="delivery_state" />
+			
+			
+			
+
+			</field>
+	</field>
+</record>
+	<record id="inherit_view_phd_pos_payment_method_form" model="ir.ui.view">
+		<field name="name">pos.payment.method.inherit</field>
+		<field name="model">pos.payment.method</field>
+		<field name="inherit_id" ref="point_of_sale.pos_payment_method_view_form"/>
+		<field name="arch" type="xml">
+			<field name="cash_journal_id" position="after">
+				<field name="is_home_delivery"/>
+			</field>
+		</field>
+	</record>
+	
+</odoo>
