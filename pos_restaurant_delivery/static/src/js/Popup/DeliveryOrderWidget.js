@@ -87,26 +87,33 @@ odoo.define('pos_restaurant_delivery.DeliveryOrderWidget', function(require) {
 
 		async create() {
 			let self = this;
-			let order = this.order;
-
+			let order = {...this.order};
 
 			let delivery_person_id = $('.person_id').val(); 
 			let other_addrs = $("#apply_shipping_address").is(':checked') ? 1 : 0;
 			
 			let delivery_date = $('#my_date').val();
-			if (delivery_date) {
-				let dd_date = new Date(delivery_date);
-				delivery_date = dd_date.toISOString();
-			}
+			let dd_date = new Date(delivery_date);
 
-			
+			if (!order.id){
+				const orders = await rpc.query({
+					model: 'pos.order',
+				method: 'search',
+				args: [ [['pos_reference','like',this.uid]]],
+				kwargs:{
+					"limit":1
+				}
+			}
+				)
+				order.id = orders[0]
+			}
 			const rpc_response = rpc.query({
 				model: 'pos.order',
 				method: 'save_delivery_order_data',
 				args: [[order.id], {
 					delivery_person_id,
 					delivery_order:true,
-					// delivery_date 
+					delivery_date
 				}],
 			}) 
 			$.when(rpc_response).done(()=>self._closePopup.bind(self)(true));

@@ -51,9 +51,10 @@ odoo.define('pos_restaurant_delivery.pos_delivery', function (require) {
 				method: 'get_order_without_delivery_from_session',
 				args: [ this.pos_session.id]})
 
-			orders.forEach((order,i)=>{
+			orders.forEach((orderjson,i)=>{
 
-				var order = new models.DeliveryOrder(order, {pos:this})
+				var order = new models.DeliveryOrder({}, {pos:this,json:orderjson})
+				this.get("pendingDeliveryOrders").reset()
 				this.get("pendingDeliveryOrders").add(order)
 			} )
 	}
@@ -82,7 +83,7 @@ odoo.define('pos_restaurant_delivery.pos_delivery', function (require) {
 			this.finalized      = false; // if true, cannot be modified.
 			this.set_pricelist(this.pos.default_pricelist);
 			
-			var partner = attr.partner_id
+			var partner = options.json.partner_id
 			if (partner){
 
 				var client = this.pos.db.get_partner_by_id(partner[0]);
@@ -106,19 +107,25 @@ odoo.define('pos_restaurant_delivery.pos_delivery', function (require) {
 					inputTipAmount: '',
 				})
 			};
-			this.init_from_JSON(attr)
+			this.init_from_JSON(options.json)
 		},
 		set_delivery_data: function(fields){
-			this.d_name = fields.d_name;
-			this.mobile = fields.mobile;
-			this.email = fields.email;
-			this.address = fields.address;
-			this.street = fields.street;
-			this.city = fields.city;
-			this.zip = fields.zip || "";
+			const customer=  this.get_client()
+			this.id = fields.id;
+			this.status = fields.status;
+			this.d_name = fields.name;
+			this.name = fields.name;
+			this.amount_total = fields.amount_total;
+			this.amount_return = fields.amount_return;
+			this.mobile = customer.mobile;
+			this.email = customer.email;
+			this.address = customer.address;
+			this.street = customer.street;
+			this.city = customer.city;
+			this.zip = customer.zip || "";
 			this.delivery_date = fields.delivery_date;
-			this.person_id = fields.person_id;
-			this.order_note = fields.order_note;
+			this.person_id = fields.delivery_person_id;
+			this.order_note = fields.note;
 			this.trigger('change',this);
 		},
 		set_delivery_status: function(delivery){

@@ -18,9 +18,7 @@ odoo.define('pos_restaurant_delivery.PendingDeliveryButton', function(require) {
 
         async onClick() {
 			var self = this;
-                console.log(this.props)
             if (this.props.isPendingOrderScreenShown) {
-                console.log('close')
                 posbus.trigger('close-screen');
             } else {
 				self.showScreen('PendingDeliveryScreen',
