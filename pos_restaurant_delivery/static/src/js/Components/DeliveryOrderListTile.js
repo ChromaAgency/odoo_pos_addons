@@ -48,7 +48,6 @@ odoo.define('pos_restaurant_delivery.PendingDeliveryScreen', function(require) {
             return this.props.order;
         }
         async setInProgress(order_rec) {
-            console.log(order_rec)
             let res = await rpc.query({
                 model: 'pos.order',
                 method: 'make_delivery_in_progress',
