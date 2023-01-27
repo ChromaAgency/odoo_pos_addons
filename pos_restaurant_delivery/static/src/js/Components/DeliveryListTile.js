@@ -1,4 +1,4 @@
-odoo.define('pos_restaurant_delivery.PendingDeliveryScreen', function(require) {
+odoo.define('pos_restaurant_delivery.DeliveryListTile', function(require) {
     'use strict';
 
     const PosComponent = require('point_of_sale.PosComponent');

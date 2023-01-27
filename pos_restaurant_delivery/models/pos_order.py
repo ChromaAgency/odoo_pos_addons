@@ -103,7 +103,6 @@ class PosOrder(models.Model):
 			vals['amount_total'] = round(pos_order_vals.get('amount_total'), 2)
 			vals['amount_return'] = -round(pos_order_vals.get('amount_paid'), 2)
 			pending_orders_vals.append(vals)
-			_logger.info(vals)
 		return pending_orders_vals
 
 	@model
@@ -154,13 +153,15 @@ class PosOrder(models.Model):
 
 	@model
 	def mark_all_deliveries_in_progress_for(self, employee_id):
-		...
+		self.search([('delivery_person_id','=',employee_id)]).make_delivery_in_progress()
+
 	@model
 	def mark_all_deliveries_delivered_for(self, employee_id):
-		...
+		self.search([('delivery_person_id','=',employee_id)]).make_delivery_delivered()
+		
 	@model
 	def mark_all_deliveries_payed_for(self, employee_id):
-		...
+		self.search([('delivery_person_id','=',employee_id)]).make_delivery_payment()
 
 	@model
 	def get_order_without_delivery_from_session(self, session_id): 

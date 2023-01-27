@@ -23,7 +23,6 @@ odoo.define('pos_restaurant_delivery.PendingDeliveryScreen', function(require) {
             posbus.off('close-screen', this);
         }
         get pendingOrders() {
-            console.log(this.props.pendingOrders)
             return this.props.pendingOrders || [];
         }
 
