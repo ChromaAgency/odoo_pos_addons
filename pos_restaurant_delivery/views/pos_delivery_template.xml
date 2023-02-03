@@ -17,6 +17,7 @@
                 <script type="text/javascript" src="/pos_restaurant_delivery/static/src/js/Chrome.js"></script>
                 <script type="text/javascript" src="/pos_restaurant_delivery/static/src/js/Components/DeliveryOrderListTile.js"></script>
                 <script type="text/javascript" src="/pos_restaurant_delivery/static/src/js/Components/DeliveryListTile.js"></script>
+                <script type="text/javascript" src="/pos_restaurant_delivery/static/src/js/Screens/ReceiptScreen.js"></script>
                 
             </xpath>
         </template>

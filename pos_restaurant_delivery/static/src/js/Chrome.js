@@ -7,9 +7,12 @@ odoo.define('pos_restaurant_delivery.Chrome', function(require) {
         constructor() {
             super(...arguments);
         }
+        get showDeliveryButton (){
+            return this.env.pos?.config?.pos_verify_delivery
+        }
 
         get isPendingOrderScreenShown() {
-            return this.mainScreen.name === 'PendingDeliveryScreen';
+            return this.mainScreen.name === 'PendingDeliveryScreen' ;
         }
     }
     Registries.Component.extend(Chrome, DeliveryChrome);
