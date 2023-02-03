@@ -19,17 +19,12 @@ odoo.define('pos_restaurant_delivery.ShowOrderButton',function(require){
             var self = this;
             var orders = await this._GetOrders();
             await self.showTempScreen('ShowOrdersWidget', {
-                'title': _t('Delivery Orders'),
-                'allOrders': orders,
+                'title': _t('Delivery Orders')
             });
         }
 
         async _GetOrders() {
-            var orders = await rpc.query({
-                model: 'pos.order',
-                method: 'get_pending_orders_vals',
-                args: [[]],
-            });
+            var orders = await this.env.pos.get_unfinished_orders()
             return orders;
         }
 
@@ -55,15 +50,21 @@ odoo.define('pos_restaurant_delivery.ShowOrdersWidget',function(require){
     const Registries = require('point_of_sale.Registries');
     const { useListener } = require('web.custom_hooks');
     var rpc = require('web.rpc');
+    const {useState} = owl.hooks;
 
     class ShowOrdersWidget extends AbstractAwaitablePopup {
         constructor() {
             super(...arguments);
+            useListener('refresh-orders', this._onRefreshOrders);
+            this.state = useState({allOrders:this.env.pos.get("pendingDeliveryOrders").models || []});
    
         }
-
+        async _onRefreshOrders (){
+            const orders = await this.env.pos.get_unfinished_orders()
+            this.state.allOrders = orders
+        }
         get allorders() {
-            return this.props.allOrders;
+            return  this.state.allOrders;
         }
         cancel() {
 			this.trigger('close-temp-screen');

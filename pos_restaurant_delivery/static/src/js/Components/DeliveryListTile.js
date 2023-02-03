@@ -37,10 +37,11 @@ odoo.define('pos_restaurant_delivery.DeliveryListTile', function(require) {
         async _onClickEmployee() {
 		    var self = this;
             var orders = await this._getDeliveryOrders(this.employee.id);
-            await self.showTempScreen('DeliveriesOrderList', {
+            self.showTempScreen('DeliveriesOrderList', {
                 'title': _t('Delivery Orders'),
-                'allOrders': orders,
+                employeeId:this.employee.id
             });
+
         }
         setInProgress(){
             rpc.query({
@@ -66,12 +67,8 @@ odoo.define('pos_restaurant_delivery.DeliveryListTile', function(require) {
         
         
         async _getDeliveryOrders(employeeId) {
-            var orders = await rpc.query({
-                model: 'pos.order',
-                method: 'get_employee_delivery_orders',
-                kwargs: {'employee_id': employeeId},
-            });
-            return orders;
+            
+            return await this.env.pos.get_employee_unfinished_orders(employeeId);
         }
       
 

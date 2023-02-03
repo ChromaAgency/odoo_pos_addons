@@ -52,12 +52,51 @@ odoo.define('pos_restaurant_delivery.pos_delivery', function (require) {
 				args: [this.pos_session.id]
 			})
 
+			this.get("pendingDeliveryOrders").reset()
 			orders.forEach((orderjson, i) => {
 
 				var order = new models.DeliveryOrder({}, { pos: this, json: orderjson })
-				this.get("pendingDeliveryOrders").reset()
 				this.get("pendingDeliveryOrders").add(order)
 			})
+			return this.get("pendingDeliveryOrders").models
+		},
+		get_deliveries_with_orders: async function () {
+			var deliveries = await rpc.query({
+                model: 'pos.order',
+                method: 'get_employees',
+				args:[]
+            });
+			return deliveries
+		},
+		get_unfinished_orders: async function (employeeId) {
+			var orders = await rpc.query({
+                model: 'pos.order',
+                method: 'get_pending_orders_vals',
+				args:[[]]
+            });
+			
+			this.get("pendingDeliveryOrders").reset()
+			orders.forEach((orderjson, i) => {
+
+				var order = new models.DeliveryOrder({}, { pos: this, json: orderjson })
+				this.get("pendingDeliveryOrders").add(order)
+			})
+			return this.get("pendingDeliveryOrders").models;
+		},
+		get_employee_unfinished_orders: async function (employeeId) {
+			var orders = await rpc.query({
+                model: 'pos.order',
+                method: 'get_employee_delivery_orders',
+                kwargs: {'employee_id': employeeId},
+            });
+			
+			this.get("pendingDeliveryOrders").reset()
+			orders.forEach((orderjson, i) => {
+
+				var order = new models.DeliveryOrder({}, { pos: this, json: orderjson })
+				this.get("pendingDeliveryOrders").add(order)
+			})
+			return this.get("pendingDeliveryOrders").models;
 		}
 	});
 
@@ -125,6 +164,7 @@ odoo.define('pos_restaurant_delivery.pos_delivery', function (require) {
 			this.city = customer.city;
 			this.zip = customer.zip || "";
 			this.delivery_date = fields.delivery_date;
+			this.delivery_state = fields.delivery_state;
 			this.person_id = fields.delivery_person_id;
 			this.order_note = fields.note;
 			this.trigger('change', this);

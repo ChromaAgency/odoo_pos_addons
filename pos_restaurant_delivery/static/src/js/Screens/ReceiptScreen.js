@@ -18,5 +18,5 @@ odoo.define('pos_restaurant_delivery.BiReceiptScreen', function(require) {
 
 	Registries.Component.extend(ReceiptScreen, BiReceiptScreen);
 
-	return OrderReceipt;
+	return ReceiptScreen;
 });

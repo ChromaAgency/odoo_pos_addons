@@ -51,7 +51,10 @@ odoo.define('pos_restaurant_delivery.HomeDelivery', function(require) {
 				'order_note' : order.order_note,
 				order
 			}
-			self.showPopup('DeliveryOrderWidget',props);
+			self.showPopup('DeliveryOrderWidget',props).then(()=>{
+				this.trigger('refresh-orders',this);
+
+			});
         }
     }
     HomeDelivery.template = 'HomeDelivery';

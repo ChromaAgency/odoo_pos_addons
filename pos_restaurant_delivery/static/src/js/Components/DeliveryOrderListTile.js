@@ -48,11 +48,13 @@ odoo.define('pos_restaurant_delivery.DeliveryOrderListTile', function(require) {
             return this.props.order;
         }
         async setInProgress(order_rec) {
+            
             let res = await rpc.query({
                 model: 'pos.order',
                 method: 'make_delivery_in_progress',
                 args: [[this.order.id]],
             });
+            this.trigger('refresh-orders',this);
             alert('Order is out for delivery.');
             
         }
@@ -62,6 +64,7 @@ odoo.define('pos_restaurant_delivery.DeliveryOrderListTile', function(require) {
                 method: 'make_delivery_delivered',
                 args: [[this.order.id]],
             });
+            this.trigger('refresh-orders',this);
             alert('Order has been delivered and order has been updated to "Delivered" state.');
             
         }
@@ -71,6 +74,7 @@ odoo.define('pos_restaurant_delivery.DeliveryOrderListTile', function(require) {
                 method: 'make_delivery_payment',
                 args: [[this.order.id]],
             });
+            this.trigger('refresh-orders',this);
             alert('Payment completed and order has been updated to "Paid" state.');
             
         }
@@ -81,6 +85,7 @@ odoo.define('pos_restaurant_delivery.DeliveryOrderListTile', function(require) {
                 method: 'make_delivery_cancel',
                 args: [[this.order.id]],
             });
+            this.trigger('refresh-orders',this);
             alert('Order has been updated to "Cancelled" state.');
             
         }

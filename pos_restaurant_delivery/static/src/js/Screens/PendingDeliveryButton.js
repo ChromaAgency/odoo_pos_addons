@@ -21,17 +21,17 @@ odoo.define('pos_restaurant_delivery.PendingDeliveryButton', function(require) {
             if (this.props.isPendingOrderScreenShown) {
                 posbus.trigger('close-screen');
             } else {
-				self.showScreen('PendingDeliveryScreen',
-				{
-					pendingOrders: await self._getPendingOrders()
-				})
+                await this._getPendingOrders()
+				self.showScreen('PendingDeliveryScreen',{
+                'title': _t('Delivery Orders')
+
+                })
             }
         }
 		async _getPendingOrders() {
-            await this.env.pos.get_pending_orders()
-            var pendingOrders = this.env.pos.get("pendingDeliveryOrders");
-            var {models } = pendingOrders
-            return models || []; 
+            
+            var pendingOrders = await this.env.pos.get_pending_orders()
+            return pendingOrders || []; 
         }
     } 
     PendingDeliveryButton.template = 'PendingDeliveryButton';

@@ -24,11 +24,7 @@ odoo.define('pos_restaurant_delivery.ShowEmployeeButton',function(require){
         }
 
         async _GetEmployees() {
-            var employees = await rpc.query({
-                model: 'pos.order',
-                method: 'get_employees',
-                args: [],
-            });
+            var employees = this.env.pos.get_deliveries_with_orders()
             return employees;
         }
     }
@@ -84,13 +80,21 @@ odoo.define('pos_restaurant_delivery.ShowDeliveryOrderWidget',function(require){
     var core = require('web.core');
     var _t = core._t;
     var rpc = require('web.rpc');
+    const { useState } = owl.hooks;
 
     class DeliveriesOrderList extends AbstractAwaitablePopup {
         constructor() {
             super(...arguments);
+            useListener('refresh-orders', this._onRefreshOrders);
+            this.state = useState({allOrders:this.env.pos.get("pendingDeliveryOrders").models || []});
         }
-        get allorders() {
-            return this.props.allOrders;
+        
+        get allOrders(){
+            return this.state.allOrders;
+        }
+        async _onRefreshOrders (){
+            var orders = await this.env.pos.get_employee_unfinished_orders(this.props.employeeId);
+            this.state.allOrders = orders
         }
         async cancel() {
 			var self = this;

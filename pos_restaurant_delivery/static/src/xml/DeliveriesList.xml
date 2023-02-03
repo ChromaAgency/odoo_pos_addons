@@ -77,7 +77,7 @@
                                             </tr>
                                         </thead>
                                         <tbody class='show-order-list-lines'>
-                                            <t t-foreach="allorders" t-as="order" t-key="order.id">
+                                            <t t-foreach="allOrders" t-as="order" t-key="order.id">
                                                 <DeliveryOrderListTile order="order"/>
                                             </t>
                                         </tbody>

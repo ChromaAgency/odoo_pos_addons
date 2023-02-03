@@ -10,11 +10,19 @@ odoo.define('pos_restaurant_delivery.PendingDeliveryScreen', function(require) {
     const Registries = require('point_of_sale.Registries');
     const { posbus } = require('point_of_sale.utils');
     var rpc = require('web.rpc');
+    const {useState} = owl.hooks;
 
     class PendingDeliveryScreen extends IndependentToOrderScreen {
         constructor() {
             super(...arguments);
             useListener('close-screen', this.close);
+            useListener('refresh-orders', this._onRefreshOrders);
+            this.state = useState({allOrders:this.env.pos.get("pendingDeliveryOrders").models || []});
+        }
+        async _onRefreshOrders (){
+            console.log('refresh')
+            const orders = await this.env.pos.get_pending_orders()
+            this.state.allOrders = orders
         }
         mounted() {
             posbus.on('close-screen', this, this.close);
@@ -23,7 +31,7 @@ odoo.define('pos_restaurant_delivery.PendingDeliveryScreen', function(require) {
             posbus.off('close-screen', this);
         }
         get pendingOrders() {
-            return this.props.pendingOrders || [];
+            return this.state.allOrders
         }
 
 

@@ -53,28 +53,28 @@ class PosOrder(models.Model):
 		return True
 
 	def make_delivery_payment(self):
-		self.ensure_one()
-		delivery_journals = []
-		amount = self.amount_paid  - self.amount_total
-		for journal in self.session_id.config_id.payment_method_ids:
-			if journal.is_home_delivery and journal.is_cash_count : 
-				delivery_journals.append(journal.id)
+		for rec in self:
+			delivery_journals = []
+			amount = rec.amount_paid  - rec.amount_total
+			for journal in rec.session_id.config_id.payment_method_ids:
+				if journal.is_home_delivery and journal.is_cash_count : 
+					delivery_journals.append(journal.id)
 
-		if not delivery_journals:
-			raise UserError(_('Please Define Home Delivery Journal..'))
-		if amount <= 0.0:
-			data = {
-				'name': _('Home/Delivery'),
-				'amount': -amount,
-				'payment_date': fields.Datetime.now(),
-				'payment_method_id': delivery_journals[0] if delivery_journals else False,
-				'pos_order_id': self.id,
-			}
+			if not delivery_journals:
+				raise UserError(_('Please Define Home Delivery Journal..'))
+			if amount <= 0.0:
+				data = {
+					'name': _('Home/Delivery'),
+					'amount': -amount,
+					'payment_date': fields.Datetime.now(),
+					'payment_method_id': delivery_journals[0] if delivery_journals else False,
+					'pos_order_id': rec.id,
+				}
 
-			self.add_payment(data)
-			self.write({'delivery_state': 'paid'})
-		else:
-			raise UserError(_('Your delivery order has already paid'))
+				rec.add_payment(data)
+				rec.write({'delivery_state': 'paid'})
+			else:
+				raise UserError(_('Your delivery order has already paid'))
 	
 	def _get_pos_order_vals_by_id(self):
 		return {pos_order_vals.get("id"):pos_order_vals for pos_order_vals in self.read(['amount_total','amount_paid','amount_return'])}
@@ -161,7 +161,7 @@ class PosOrder(models.Model):
 		
 	@model
 	def mark_all_deliveries_payed_for(self, employee_id):
-		self.search([('delivery_person_id','=',employee_id)]).make_delivery_payment()
+		self.search([('delivery_person_id','=',employee_id),('delivery_state','not in',['paid','cancel'])]).make_delivery_payment()
 
 	@model
 	def get_order_without_delivery_from_session(self, session_id): 
