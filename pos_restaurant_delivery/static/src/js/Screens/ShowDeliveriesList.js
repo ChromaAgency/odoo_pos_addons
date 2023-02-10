@@ -51,13 +51,20 @@ odoo.define('pos_restaurant_delivery.DeliveriesList',function(require){
     var core = require('web.core');
     var _t = core._t;
     var rpc = require('web.rpc');
+    const { useState } = owl.hooks;
 
     class DeliveriesList extends AbstractAwaitablePopup {
         constructor() {
             super(...arguments);
+            useListener('refresh-orders', this._onRefreshOrders);
+            this.state = useState({allEmployees:this.props.allEmployees || []});
         }
         get allemployees() {
-            return this.props.allEmployees;
+            return this.state.allEmployees;
+        }
+        async _onRefreshOrders (){
+            const employees = await this.env.pos.get_deliveries_with_orders()
+            this.state.allEmployees = employees;
         }
         cancel() {
 			this.trigger('close-temp-screen');

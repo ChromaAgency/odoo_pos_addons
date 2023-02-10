@@ -32,10 +32,6 @@
 
 					</t>
 					<t t-if="order.delivery_state == 'in_progress'">
-						<button style="box-shadow: 0px 1px 3px rgb(0 0 0 / 40%); background: #ffff007d;"
-								t-on-click="setDelivered()">Entregado</button>
-					</t>
-					<t t-if="order.delivery_state == 'delivered'">
 						<button style="box-shadow: 0px 1px 3px rgb(0 0 0 / 40%); background: #00c0ff;"
 								t-on-click="setPayed()">Finalizar</button>
 					</t>

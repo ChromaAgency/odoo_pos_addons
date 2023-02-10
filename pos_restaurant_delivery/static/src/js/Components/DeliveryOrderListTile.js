@@ -59,6 +59,7 @@ odoo.define('pos_restaurant_delivery.DeliveryOrderListTile', function(require) {
             
         }
         async setDelivered(order_rec) {
+            // TODO DEprecate this fun
             let res = await rpc.query({
                 model: 'pos.order',
                 method: 'make_delivery_delivered',

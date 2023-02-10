@@ -74,7 +74,7 @@ class PosOrder(models.Model):
 				rec.add_payment(data)
 				rec.write({'delivery_state': 'paid'})
 			else:
-				raise UserError(_('Your delivery order has already paid'))
+				rec.write({'delivery_state': 'paid'})
 	
 	def _get_pos_order_vals_by_id(self):
 		return {pos_order_vals.get("id"):pos_order_vals for pos_order_vals in self.read(['amount_total','amount_paid','amount_return'])}
@@ -153,11 +153,11 @@ class PosOrder(models.Model):
 
 	@model
 	def mark_all_deliveries_in_progress_for(self, employee_id):
-		self.search([('delivery_person_id','=',employee_id)]).make_delivery_in_progress()
+		self.search([('delivery_person_id','=',employee_id),('state','not in', ['paid','cancel'])]).make_delivery_in_progress()
 
 	@model
 	def mark_all_deliveries_delivered_for(self, employee_id):
-		self.search([('delivery_person_id','=',employee_id)]).make_delivery_delivered()
+		self.search([('delivery_person_id','=',employee_id),('state','not in', ['paid','cancel'])]).make_delivery_delivered()
 		
 	@model
 	def mark_all_deliveries_payed_for(self, employee_id):

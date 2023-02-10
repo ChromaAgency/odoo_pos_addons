@@ -43,26 +43,30 @@ odoo.define('pos_restaurant_delivery.DeliveryListTile', function(require) {
             });
 
         }
-        setInProgress(){
-            rpc.query({
+        async setInProgress(){
+            await rpc.query({
                 model: 'pos.order',
                 method: 'mark_all_deliveries_in_progress_for',
                 args: [this.employee.id],
             });
+            this.trigger('refresh-orders',this);
         }
-        setDelivered(){
-            rpc.query({
+        async setDelivered(){
+            // TODO DEprecate this fun
+            await rpc.query({
                 model: 'pos.order',
                 method: 'mark_all_deliveries_delivered_for',
                 args: [this.employee.id],
             });
+            this.trigger('refresh-orders',this);
         }
-        setPayed(){
-            rpc.query({
+        async setPayed(){
+            await rpc.query({
                 model: 'pos.order',
                 method: 'mark_all_deliveries_payed_for',
                 args: [this.employee.id],
             });
+            this.trigger('refresh-orders',this);
         }
         
         
