@@ -31,7 +31,7 @@ odoo.define('pos_restaurant_delivery.DeliveryListTile', function(require) {
             return this.employee.amount_return.toFixed(2)
         }
         get amount_return_total() {
-            return (this.employee.amount_return + this.employee.amount_total).toFixed(2)
+            return this.employee.total_cash_to_return.toFixed(2)
         }
 
         async _onClickEmployee() {
@@ -51,15 +51,7 @@ odoo.define('pos_restaurant_delivery.DeliveryListTile', function(require) {
             });
             this.trigger('refresh-orders',this);
         }
-        async setDelivered(){
-            // TODO DEprecate this fun
-            await rpc.query({
-                model: 'pos.order',
-                method: 'mark_all_deliveries_delivered_for',
-                args: [this.employee.id],
-            });
-            this.trigger('refresh-orders',this);
-        }
+
         async setPayed(){
             await rpc.query({
                 model: 'pos.order',

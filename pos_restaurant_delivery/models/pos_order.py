@@ -31,6 +31,18 @@ class PosOrder(models.Model):
 		('paid', 'Paid'),
 		('cancel', 'Cancel'),
 	], string='States', default='draft')
+	total_cash_to_return = fields.Float(string="Efectivo total a devolver", help="Total cash the delivery has to give to the commerce, composed of all the cash payments, + change", compute="_compute_total_cash_to_return")
+
+	def _compute_total_cash_to_return(self):
+		for rec in self:
+			cash_payments = rec.payment_ids.filtered(lambda r: r.payment_method_id.is_cash_count == True)
+			positive_cash_payments = cash_payments.filtered(lambda r: r.amount > 0)
+			if not rec.delivery_person_id:
+				rec.total_cash_to_return = 0
+			if positive_cash_payments:
+				rec.total_cash_to_return = sum(pay.amount for pay in positive_cash_payments)
+			else:
+				rec.total_cash_to_return = sum(abs(pay.amount) for pay in cash_payments)
 
 	def save_delivery_order_data(self, delivery_order_data):
 		return self.write(delivery_order_data)
@@ -48,7 +60,8 @@ class PosOrder(models.Model):
 		self.delivery_state = 'draft'
 		return True
 
-	def make_delivery_cancel(self):
+	def make_delivery_cancel(self, cancel_reason):
+		self.cancel_reason = cancel_reason
 		self.delivery_state = 'cancel'
 		return True
 
@@ -114,11 +127,14 @@ class PosOrder(models.Model):
 			emp_orders = self.search([('delivery_person_id', '=', emp_vals.get('id')), ('delivery_state','not in',['paid', 'cancel'])])  
 			amount_total = 0
 			amount_return = 0
+			total_cash_to_return = 0
 			for o in emp_orders:
 				amount_total += o.amount_total
 				amount_return +=  o.amount_return
+				total_cash_to_return += o.total_cash_to_return
 			emp_vals['amount_total'] = round(amount_total, 2)
 			emp_vals['amount_return'] = round(amount_return, 2)
+			emp_vals['total_cash_to_return'] = total_cash_to_return
 			emp_vals['total_orders'] = emp_vals.get("pending_delivery_order_count",0)
 			recs.append(emp_vals)
 		return recs
@@ -131,7 +147,7 @@ class PosOrder(models.Model):
 		for order_vals in orders.read():
 			pos_order_vals = get_pos_order_vals_from_dict(order_vals, pos_orders_vals_by_id)	
 			order_vals['amount_total'] = round(pos_order_vals.get('amount_total'), 2)
-			order_vals['amount_return'] = round(pos_order_vals.get('amount_return'), 2)
+			order_vals['amount_return'] = round(pos_order_vals.get('amount_return'), 2) 
 			recs.append(order_vals)
 		return recs
 

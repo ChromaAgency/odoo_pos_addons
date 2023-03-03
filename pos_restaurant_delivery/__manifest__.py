@@ -27,7 +27,7 @@
     Any special note can also be added while creating Order.
 
 """,
-    'depends': ['pos_restaurant','hr'],
+    'depends': ['pos_restaurant','hr', 'pos_cancel_reason'],
     'data': ['data/data.xml','views/pos_delivery_template.xml', 'views/pos_delivery_view.xml', 'views/hr_employee_views.xml'],
     'qweb': [
         'static/src/xml/DatetimeWidget.xml',

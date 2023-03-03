@@ -156,6 +156,7 @@ odoo.define('pos_restaurant_delivery.pos_delivery', function (require) {
 			this.d_name = fields.name;
 			this.name = fields.name;
 			this.amount_total = fields.amount_total;
+			this.total_cash_to_return = fields.total_cash_to_return;
 			this.amount_return = fields.amount_return;
 			this.mobile = customer.mobile;
 			this.email = customer.email;

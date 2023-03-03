@@ -33,11 +33,15 @@ odoo.define('pos_restaurant_delivery.DeliveryOrderListTile', function(require) {
             
         }
         get amount_total(){
-            return this.order.amount_total
+            return this.order.amount_total.toFixed(2)
             
         }
         get amount_return(){
-            return this.order.amount_return
+            return this.order.amount_return.toFixed(2)
+            
+        }
+        get total_cash_to_return(){
+            return this.order.total_cash_to_return.toFixed(2)
             
         }
         get delivery_date(){
@@ -58,17 +62,6 @@ odoo.define('pos_restaurant_delivery.DeliveryOrderListTile', function(require) {
             alert('Order is out for delivery.');
             
         }
-        async setDelivered(order_rec) {
-            // TODO DEprecate this fun
-            let res = await rpc.query({
-                model: 'pos.order',
-                method: 'make_delivery_delivered',
-                args: [[this.order.id]],
-            });
-            this.trigger('refresh-orders',this);
-            alert('Order has been delivered and order has been updated to "Delivered" state.');
-            
-        }
         async setPayed(order_rec) {
             let res = await rpc.query({
                 model: 'pos.order',
@@ -81,10 +74,14 @@ odoo.define('pos_restaurant_delivery.DeliveryOrderListTile', function(require) {
         }
         
         async setCancel(order_rec) {
+            const cancelReason = await this.showPopup('CancelReasonPopup', {
+                title: 'Cancel Reason',
+                body: `${this.name} has total amount of ${this.amount_total}, are you sure you want delete this order?`,
+            });
             let res = await rpc.query({
                 model: 'pos.order',
                 method: 'make_delivery_cancel',
-                args: [[this.order.id]],
+                args: [[this.order.id],cancelReason.payload],
             });
             this.trigger('refresh-orders',this);
             alert('Order has been updated to "Cancelled" state.');
