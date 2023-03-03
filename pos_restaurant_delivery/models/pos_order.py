@@ -181,7 +181,7 @@ class PosOrder(models.Model):
 
 	@model
 	def get_order_without_delivery_from_session(self, session_id): 
-		return self.search_read([('session_id','=',session_id), ('delivery_person_id','=',False)])
+		return self.search_read([('session_id','=',session_id), ('delivery_person_id','=',False),('delivery_state','not in',['paid','cancel']),('state','not in',['paid','cancel'])])
 
 	def _process_payment_lines(self, pos_order, order, pos_session, draft):
 		"""Create account.bank.statement.lines from the dictionary given to the parent function.
