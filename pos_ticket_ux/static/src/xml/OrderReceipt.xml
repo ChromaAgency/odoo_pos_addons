@@ -13,6 +13,10 @@
          <t t-out="receipt.partner.street" t-if="receipt.partner.street"/><t t-if="receipt.partner.street &amp; receipt.partner.street2">, </t><t t-out="receipt.partner.street2" t-if="receipt.partner.street2" /> <t t-if="receipt.partner.city  &amp; (receipt.partner.street2 | receipt.partner.street)">, <t t-out="receipt.partner.city" /> </t>
       </t>
     </xpath>
+     <t t-if="isTaxIncluded" position="replace" />
+          <t t-if="receipt.cashier" position="after">
+            <t t-out="receipt.partner" />
+        </t>
    </t>
 
 </templates>
