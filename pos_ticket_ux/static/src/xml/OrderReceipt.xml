@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-    
-    <t t-name="OrderReceipt" t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension" owl="1">
-     <t t-if="receipt.company.contact_address" position="replace">
-        <div>Bears Helados Suc. Canning</div>
+
+   <t t-name="OrderReceipt" t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension" owl="1">
+      <t t-if="receipt.company.contact_address" position="replace">
+         <div>Bears Helados Suc. Canning</div>
       </t>
-     <t  t-if="receipt.header_html" position="before">
+      <t t-if="receipt.header_html" position="before">
          <div>Instagram: bears.helados</div>
-     </t>
-    <xpath expr="//t[@t-if='receipt.cashier']" position="inside">
-      <t t-if="receipt.partner">
-         <t t-out="receipt.partner.street" t-if="receipt.partner.street"/><t t-if="receipt.partner.street &amp; receipt.partner.street2">, </t><t t-out="receipt.partner.street2" t-if="receipt.partner.street2" /> <t t-if="receipt.partner.city  &amp; (receipt.partner.street2 | receipt.partner.street)">, <t t-out="receipt.partner.city" /> </t>
       </t>
-    </xpath>
-     <t t-if="isTaxIncluded" position="replace" />
-          <t t-if="receipt.cashier" position="after">
-            <t t-out="receipt.partner" />
-        </t>
+      <xpath expr="//t[@t-if='receipt.cashier']" position="inside">
+         <t t-if="receipt.partner">
+            <t t-out="receipt.partner.street" t-if="receipt.partner.street"/>
+            <t t-if="receipt.partner.street &amp; receipt.partner.street2">, </t>
+            <t t-out="receipt.partner.street2" t-if="receipt.partner.street2" />
+            <t t-if="receipt.partner.city  &amp; (receipt.partner.street2 | receipt.partner.street)">,               <t t-out="receipt.partner.city" />
+            </t>
+         </t>
+      </xpath>
+      <t t-if="isTaxIncluded" position="replace" />
+      <t t-if="receipt.cashier" position="after">
+         <t t-out="receipt.partner" />
+      </t>
    </t>
 
 </templates>
