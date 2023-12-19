@@ -18,6 +18,7 @@
          </t>
       </xpath>
       <t t-if="isTaxIncluded" position="replace" />
+      <t t-if="!isTaxIncluded" position="replace" />
    </t>
 
 </templates>
