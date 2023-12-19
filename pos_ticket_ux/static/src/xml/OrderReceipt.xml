@@ -18,9 +18,6 @@
          </t>
       </xpath>
       <t t-if="isTaxIncluded" position="replace" />
-      <t t-if="receipt.cashier" position="after">
-         <t t-out="receipt.partner" />
-      </t>
    </t>
 
 </templates>
