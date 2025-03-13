@@ -2,7 +2,7 @@
 
 {
     'name': 'POS Delivery Order in Odoo',
-    'version': '14.0.0.1',
+    'version': '18.0.0.1',
     'category': 'Point of sale',
     'summary': 'app helps to manage point of sales home delivery feature on POS cash on Delivery details pos home delivery POS Delivery pos order home Delivery Pickup Call In POS order pickup pos Call In order delivery pos order delivery POS Retail delivery pos order pos ordering food ordering pos COD ',
     'description': """ 
