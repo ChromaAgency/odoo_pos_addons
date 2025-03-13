@@ -24,8 +24,13 @@
     ],
     # always loaded
     'data': [
-        'views/assets.xml'
     ],
     'qweb':[
     ],
+    'assets': {
+        'point_of_sale.assets': [
+            'pos_pricelist_multicurrency/static/src/js/ProductScreen/ControlButtons/SetPricelistButton.js',
+            'pos_pricelist_multicurrency/static/src/js/models.js',
+        ],
+    },
 }
