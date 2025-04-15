@@ -9,6 +9,7 @@
     """,
     'depends': ['point_of_sale', 'parallel_accounting'],
     'data': [
+        'views/pos_payment_method.xml',
     ],
     'assets': {
         'point_of_sale.assets': [

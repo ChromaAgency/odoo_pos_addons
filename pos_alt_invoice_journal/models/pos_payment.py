@@ -36,7 +36,7 @@ class PosPayment(models.Model):
             payment.write({'account_move_id': payment_move.id})
             amounts = pos_session._update_amounts({'amount': 0, 'amount_converted': 0}, {'amount': payment_amount}, payment.payment_date)
             credit_line_vals = pos_session._credit_amounts({
-                # Just change this to be compatible with parallel accounting
+                # Changed this to be compatible with parallel accounting
                 'account_id': accounting_partner.with_company(order.company_id).property_account_receivable_id.id if self.pos_order_id.to_invoice else accounting_partner.with_company(order.company_id).property_receivables_secondary_account_id.id,  # The field being company dependant, we need to make sure the right value is received.
                 'partner_id': accounting_partner.id,
                 'move_id': payment_move.id,
