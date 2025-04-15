@@ -9,20 +9,16 @@ class PosSession(models.Model):
 
     def _get_split_receivable_vals(self, payment, amount, amount_converted):
         data = super()._get_split_receivable_vals(payment, amount, amount_converted)
-        _logger.info(data)
-
         if not payment.pos_order_id.to_invoice:
             accounting_partner = self.env["res.partner"]._find_accounting_partner(payment.partner_id)
             data['account_id'] = accounting_partner.property_receivables_secondary_account_id.id
-        _logger.info(data)
-
         return data
 
     def _create_split_account_payment(self, payment, amounts):
         payment_method = payment.payment_method_id
         if not payment_method.journal_id:
             return self.env['account.move.line']
-        outstanding_account = payment_method.outstanding_account_id
+        outstanding_account = payment_method.outstanding_account_id if payment.pos_order_id.to_invoice else payment_method.secondary_journal_id.outstanding_account_id
         accounting_partner = self.env["res.partner"]._find_accounting_partner(payment.partner_id)
         receivable_account = accounting_partner.property_account_receivable_id if payment.pos_order_id.to_invoice else accounting_partner.property_receivables_secondary_account_id
         destination_account = receivable_account
@@ -107,7 +103,6 @@ class PosSession(models.Model):
                     if order_is_invoiced:
                         split_inv_payment_receivable_lines[payment] |= payment.account_move_id.line_ids.filtered(lambda line: line.account_id == pos_receivable_account)
                         split_invoice_receivables[payment] = self._update_amounts(split_invoice_receivables[payment], {'amount': payment.amount}, order.date_order)
-        _logger.info(data)
         data['split_receivables_bank'] = split_receivables_bank
         data['split_receivables_cash'] = split_receivables_cash
         data['split_inv_payment_receivable_lines'] = split_inv_payment_receivable_lines
