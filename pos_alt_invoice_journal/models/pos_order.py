@@ -24,7 +24,8 @@ class PosOrder(models.Model):
 
     def _process_saved_order(self, order_data):
         _ = super(PosOrder, self)._process_saved_order(order_data)
-        if not self.to_invoice and self.state == 'paid':
+        line_values_list = self._prepare_tax_base_line_values()
+        if not self.to_invoice and self.state == 'paid' and line_values_list:
             self._generate_pos_order_invoice()
         return _
 

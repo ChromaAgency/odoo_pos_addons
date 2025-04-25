@@ -18,7 +18,7 @@ class PosSession(models.Model):
         payment_method = payment.payment_method_id
         if not payment_method.journal_id:
             return self.env['account.move.line']
-        outstanding_account = payment_method.outstanding_account_id if payment.pos_order_id.to_invoice else payment_method.secondary_journal_id.outstanding_account_id
+        outstanding_account = payment_method.outstanding_account_id if payment.pos_order_id.to_invoice else (payment_method.secondary_journal_id or payment_method.journal_id).default_account_id
         accounting_partner = self.env["res.partner"]._find_accounting_partner(payment.partner_id)
         receivable_account = accounting_partner.property_account_receivable_id if payment.pos_order_id.to_invoice else accounting_partner.property_receivables_secondary_account_id
         destination_account = receivable_account
@@ -30,7 +30,7 @@ class PosSession(models.Model):
         account_payment = self.env['account.payment'].create({
             'amount': abs(amounts['amount']),
             'partner_id': payment.partner_id.id,
-            'journal_id': payment_method.journal_id.id if payment.pos_order_id.to_invoice else payment_method.secondary_journal_id.id,
+            'journal_id': payment_method.journal_id.id if payment.pos_order_id.to_invoice else payment_method.secondary_journal_id.id or payment_method.journal_id.id,
             'force_outstanding_account_id': outstanding_account.id,
             'destination_account_id': destination_account.id,
             'memo': _('%(payment_method)s POS payment of %(partner)s in %(session)s', payment_method=payment_method.name, partner=payment.partner_id.display_name, session=self.name),
