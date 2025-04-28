@@ -45,7 +45,7 @@ class PosSession(models.Model):
         vals = super()._get_split_statement_line_vals(journal_id, amount, payment)
         accounting_partner = self.env["res.partner"]._find_accounting_partner(payment.partner_id)
         if not payment.pos_order_id.to_invoice:
-            vals['journal_id'] = payment.payment_method_id.secondary_journal_id.id,
+            vals['journal_id'] = payment.payment_method_id.secondary_journal_id.id or payment.payment_method_id.journal_id.id,
             vals['counterpart_account_id'] = accounting_partner.property_receivables_secondary_account_id.id,
         return vals
 
