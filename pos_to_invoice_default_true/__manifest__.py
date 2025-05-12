@@ -13,7 +13,7 @@
     ],
     'assets': {
         'point_of_sale._assets_pos': [
-            'avinoa/static/src/js/**/*',
+            'pos_to_invoice_default_true/static/src/js/**/*',
         ],
     },
     'installable': True,
