@@ -2,15 +2,6 @@ from odoo import models, fields, api
 import logging
 _logger = logging.getLogger(__name__)
 
-class PosOrder(models.Model):
-    _inherit = 'pos.order'
-
-    def sync_from_ui(self, orders):
-        _logger.info(f'orders: {orders}')
-        return super().sync_from_ui(orders)
-        
-
-
 class PosPayment(models.Model):
     _inherit = 'pos.payment'
 

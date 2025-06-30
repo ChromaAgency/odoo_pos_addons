@@ -31,6 +31,8 @@ class PosOrder(models.Model):
 
     def _prepare_invoice_vals(self):
         vals = super(PosOrder, self)._prepare_invoice_vals()
+        if 'invoice_payment_term_id' in vals:
+            del vals['invoice_payment_term_id']
         if not self.to_invoice and self.state == 'paid':
             vals['journal_id'] = self.config_id.journal_id.id
         return vals
