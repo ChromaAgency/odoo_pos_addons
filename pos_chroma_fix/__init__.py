@@ -16,7 +16,7 @@ class PosOrder(models.Model):
     def _prepare_invoice_vals(self):
         vals = super(PosOrder, self)._prepare_invoice_vals()
         if 'invoice_payment_term_id' in vals:
-            del vals['invoice_payment_term_id']
+            vals['invoice_payment_term_id'] = self.partner_id.property_payment_term_id.id
         if not self.to_invoice and self.state == 'paid':
             vals['journal_id'] = self.config_id.journal_id.id
         return vals
@@ -28,7 +28,7 @@ class PosSession(models.Model):
         vals = super()._get_split_statement_line_vals(journal_id, amount, payment)
         if not payment.pos_order_id.to_invoice:
             if 'invoice_payment_term_id' in vals:
-                del vals['invoice_payment_term_id']
+                vals['invoice_payment_term_id'] = payment.pos_order_id.partner_id.property_payment_term_id.id
         return vals
 
 
