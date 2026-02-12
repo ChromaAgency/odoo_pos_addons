@@ -109,3 +109,12 @@ class PosSession(models.Model):
         data['split_invoice_receivables'] = split_invoice_receivables
 
         return data
+    
+class AccountMove(models.Model):
+    _inherit = 'account.move'
+
+    def is_sale_document(self, include_receipts=False):
+        _logger.info('is_sale_document called with include_receipts=%s for move %s', include_receipts, self.name)
+        _logger.info("Amount %s", self.amount_total)
+        vals = super().is_sale_document(include_receipts=include_receipts)
+        return vals
